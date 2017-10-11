@@ -8,6 +8,8 @@ Return
 #e::
 IfWinExist, ahk_class Vim
     WinActivate ; use the window found above
+else
+    Run "C:\Users\luksty\OneDrive - Syncron\VIM\gvim.exe"
 return
 
 ; ; VIM HOT KEYS
@@ -29,4 +31,4 @@ CapsLock::Esc
 F10::ExitApp
 ;#z::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.
 MButton::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.
-#z::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.
+#x::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.

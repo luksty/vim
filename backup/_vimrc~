@@ -37,12 +37,12 @@ call plug#end()
 "     colorscheme solarized
 " catch
 " endtry
-call togglebg#map("<F5>")
+" call togglebg#map("<F5>")
 colorscheme obsidian2
 au GUIEnter * hi search guibg=yellow
 au GUIEnter * hi incsearch guibg=yellow
 
-"owiêkszenie czcionki
+"Powiêkszenie czcionki
 set guifont=Courier:h13:cANSI:qDRAFT
 "pressing Win-Up to maximize VIM on startup
 au GUIEnter * simalt ~x
@@ -191,7 +191,15 @@ function! ConcatenateIntoList()
     s/$/)
 endfunction
 
-au GUIEnter * call textobj#user#plugin('line', {
+call textobj#user#plugin('entire', {
+\      '-': {
+\        '*sfile*': expand('<sfile>:p'),
+\        'select-a': 'af',  '*select-a-function*': 's:select_a',
+\        'select-i': 'if',  '*select-i-function*': 's:select_i'
+\      }
+\    })
+
+call textobj#user#plugin('end', {
 \   '-': {
 \     'select-a-function': 'TillEndOfFileA',
 \     'select-a': 'ae',

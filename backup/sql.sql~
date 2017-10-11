@@ -1,7 +1,7 @@
 CREATE TABLE LUKSTY({{{}}}
    ID BIGSERIAL PRIMARY KEY     NOT NULL,
    VAR           TEXT    NOT NULL
-);
+)fdf;
 drop table luksty;
 truncate table luksty;
 
