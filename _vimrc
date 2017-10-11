@@ -2,8 +2,9 @@ let $HOME='C:\Users\luksty\OneDrive - Syncron\TEMP'
 set backupdir=C:/Users/luksty/OneDrive\ -\ Syncron/VIM/backup//
 set directory=C:/Users/luksty/OneDrive\ -\ Syncron/VIM/swap//
 set undodir=C:/Users/luksty/OneDrive\ -\ Syncron/VIM/undo//
-"sprawia, ¿e ka¿da zak³adka ma jako pwd lokalizacjê pliku
-set autochdir
+"sprawia, ¿e ka¿da zak³adka ma jako pwd lokalizacjê pliku - kolidowa³o
+"prawdopodobnie z vim-workspace
+" set autochdir
 "ustawia working directory na œcie¿kê pliku
 nnoremap <LEADER>cd :cd %:p:h<CR>:pwd<CR>
 
@@ -25,17 +26,21 @@ Plug 'kana/vim-textobj-line'
 "A convenient text object for last pasted text
 Plug 'saaguero/vim-textobj-pastedtext'
 "Persistent Vim Session
- Plug 'thaerkh/vim-workspace'
+Plug 'thaerkh/vim-workspace'
+"A tree explorer
+Plug 'scrooloose/nerdtree'
 call plug#end()
 
  " -- solarized personal conf
-set background=light
-try
-    colorscheme solarized
-catch
-endtry
+" set background=light
+" try
+"     colorscheme solarized
+" catch
+" endtry
 call togglebg#map("<F5>")
-"colorscheme obsidian2
+colorscheme obsidian2
+au GUIEnter * hi search guibg=yellow
+au GUIEnter * hi incsearch guibg=yellow
 
 "owiêkszenie czcionki
 set guifont=Courier:h13:cANSI:qDRAFT
@@ -43,6 +48,8 @@ set guifont=Courier:h13:cANSI:qDRAFT
 au GUIEnter * simalt ~x
 "stop logging and creating _viminfo
 set viminfo=
+autocmd FileType autohotkey set commentstring=;\ %s
+autocmd FileType sql set commentstring=--\ %s
 
 "usuwa pasek z narzêdziami
 set guioptions -=T
@@ -78,17 +85,14 @@ noremap <Leader>33 I<right><backspace><ESC>
 :nnoremap <Leader>sw :%s/\<<C-r><C-w>\>/
 map <leader>ps :set syntax=python<cr>
 map <leader>pp :%Py<CR>
+map <F6> :%Py<CR>
 imap <leader>pf for idx, line in enumerate(c):<CR><SPACE><SPACE><SPACE><SPACE><CR>xxx<CR><LEFT><LEFT><LEFT><LEFT><LEFT>
 map <leader>pf ifor idx, line in enumerate(c):<CR><SPACE><SPACE><SPACE><SPACE><CR>xxx<CR><LEFT><LEFT><LEFT><LEFT><LEFT>
 map <leader>te :Temp<CR>
 map <leader>bd :RemoveCurrentFile<CR>
 map <leader>bo :OpenCurrentFileDirectory<CR>
-"noremap Y 0y$
 noremap Y y$
-"
 noremap <C-I> <C-A>
-noremap <F3> vip:s/^/#<CR><esc>
-noremap <F4> vip:s/#/<CR><esc>
 noremap <esc> :noh<return><esc>
 noremap <leader>ss :%s//g<left><left>
 noremap <leader>sa :s//g<left><left>
@@ -103,7 +107,6 @@ noremap <leader>rr :redir END<CR>
 noremap  <S-k> :tabn<CR>
 noremap  <S-j> :tabp<CR>
 nnoremap <f2> :set nu! nu?<cr>
-noremap <S-Enter> O<Esc>
 nnoremap <Space> i_<Esc>r
 noremap <CR> i<cr><Esc>
 noremap tn :tabnew<CR>
@@ -186,4 +189,29 @@ function! ConcatenateIntoList()
     %j
     s/^/(
     s/$/)
+endfunction
+
+au GUIEnter * call textobj#user#plugin('line', {
+\   '-': {
+\     'select-a-function': 'TillEndOfFileA',
+\     'select-a': 'ae',
+\     'select-i-function': 'TillEndOfFileI',
+\     'select-i': 'ie',
+\   },
+\ })
+
+function! TillEndOfFileA()
+  normal! 0
+  let head_pos = getpos('.')
+  normal! G$
+  let tail_pos = getpos('.')
+  return ['V', head_pos, tail_pos]
+endfunction
+
+function! TillEndOfFileI()
+  normal! 0
+  let head_pos = getpos('.')
+  normal! G$
+  let tail_pos = getpos('.')
+  return ['v', head_pos, tail_pos]
 endfunction
