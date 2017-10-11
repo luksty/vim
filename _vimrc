@@ -58,9 +58,6 @@ set clipboard=unnamed
 set expandtab
 set shiftwidth=4
 set tabstop=4
-"ustawianie pow³oki
-"set shell=\"C:\Program\ Files\Git\bin\sh.exe\"
-"set shellcmdflag=--login\ -i
 set dir=$TEMP
 let mapleader = ","
 set nocompatible
@@ -70,18 +67,17 @@ source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
 cd C:\Users\luksty\OneDrive - Syncron\TEMP
-au BufRead *.txt set syntax=vb
 set shiftwidth=4
 
+"enables repeating last command with dot on visual selection
 :vnoremap . :norm.<CR>
+"the same as following is done with line custom text object with vim-textobj-user
 " :vnoremap <silent> al :<c-u>norm!0v$<cr>
 " :vnoremap <silent> il :<c-u>norm!^v$<cr>
 " :onoremap <silent> al :norm val<cr>
 " :onoremap <silent> il :norm vil<cr>
 
 noremap <Leader>e :tabe C:\Users\luksty\OneDrive - Syncron\TEMP\
-noremap <Leader>3 I#<ESC>
-noremap <Leader>33 I<right><backspace><ESC>
 :nnoremap <Leader>sw :%s/\<<C-r><C-w>\>/
 map <leader>ps :set syntax=python<cr>
 map <leader>pp :%Py<CR>
@@ -96,8 +92,6 @@ noremap <C-I> <C-A>
 noremap <esc> :noh<return><esc>
 noremap <leader>ss :%s//g<left><left>
 noremap <leader>sa :s//g<left><left>
-noremap <leader>" :s/^/'<CR>
-noremap <leader>"" :s/^'//<CR>
 noremap <leader>ve :tabe $MYVIMRC<cr>
 "noremap <leader>vs :source $MYVIMRC<CR>
 noremap <leader>vs :source %<CR>
