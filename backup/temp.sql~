@@ -1,0 +1,30 @@
+select a.warehouse_code, a.supplier_code, a.OL_CNT, avg.OL_ARCH_CNT, avg.DATE_ARCH_CNT, avg.OL_ARCH_AVG, case when a.ol_cnt > avg.ol_arch_avg then 1 else 0 end as FLG_HIGHORDER from
+  (SELECT
+  W.WAREHOUSE_CODE,
+  S.SUPPLIER_CODE,
+  COUNT(OL.ID) as OL_CNT
+FROM D_ORDER_LINE OL
+  INNER JOIN D_ITEM I ON OL.ITEM_ID = I.ID
+  INNER JOIN D_WAREHOUSE W ON I.WAREHOUSE_ID = W.ID
+  INNER JOIN D_SUPPLIER S ON OL.SUPPLIER_ID = S.ID
+WHERE S.DISPLAY_NAME = 'DC'
+      AND W.WAREHOUSE_CODE = '${/DATA_OWNER}'
+      AND OL.REPLENISHMENT_POLICY_COMPL_EFF = 'Y'
+      AND OL.BLOCKING_COUNT = 0
+      AND OL.ORD_STATUS = 'C'
+      AND OL.ORDER_REASON = 'REFILL'
+GROUP BY W.WAREHOUSE_CODE, S.SUPPLIER_CODE) a
+inner join (select t.*, t.OL_ARCH_CNT/t.DATE_ARCH_CNT as OG from
+  (select  W.WAREHOUSE_CODE, count(*) as OL_ARCH_CNT, count(distinct(oa.confirmed_date)) as DATE_ARCH_CNT
+                       FROM D_ORDER_ARCHIVE OA
+                         INNER JOIN D_ITEM I ON OA.ITEM_ID = I.ID
+                         INNER JOIN D_WAREHOUSE W ON I.WAREHOUSE_ID = W.ID
+                         INNER JOIN D_SUPPLIER S ON OA.SUPPLIER_ID = S.ID
+                       WHERE S.DISPLAY_NAME = 'DC'
+                             AND W.WAREHOUSE_CODE = '${/DATA_OWNER}'
+                             AND OA.REPLENISHMENT_POLICY_COMPL_EFF = 'Y'
+                             AND OA.BLOCKED = 'N'
+                             AND OA.ORD_STATUS = 'E'
+                             AND OA.ORDER_REASON = 'REFILL'
+                             AND OA.CONFIRMED_DATE > CURRENT_DATE - 50
+                        GROUP BY W.WAREHOUSE_CODE) as t) as avg on a.warehouse_code = avg.warehouse_code

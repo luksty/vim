@@ -1,0 +1,105 @@
+import psycopg2
+import datetime, os, sys
+
+if len(sys.argv) == 2:
+    PARAM1 = sys.argv[1]
+else: 
+    PARAM1 = 0
+if len(sys.argv) == 3:
+    PARAM2 = sys.argv[2]
+else:
+    PARAM2 = 0
+#if PARAM1=TRUE then script will only execute Insert_new_override_with_calc_pending_set_current_date and Update_existing_override_with_calc_pending_set and 
+#if PARAM2 is specified then script will override folder name
+
+conn = psycopg2.connect(database='dtna_prod', user='dtna_prod', password='rZvlF|KI3', host='dtna-prod.cq6chcdhx3qg.us-east-1.rds.amazonaws.com', port='5432', sslmode='require')
+#conn = psycopg2.connect(database='dtna_dev', user='dtna_dev', password='U.kGA4QU', host='dtna-dev.cjeoopoc0wku.us-east-1.rds.amazonaws.com', port='5432', sslmode='require')
+
+
+
+###creating folder named as current date in working directory
+def create_folder():
+    now = datetime.datetime.now()
+    data = str(now.strftime("%Y-%m-%d"))
+    if not PARAM2:
+        newpath = data
+    else: newpath = PARAM2
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
+    return(newpath)
+
+def print_sql_to_file(filename, rows, colnum):
+    with open(filename,'w') as g:
+        for row in rows:
+            print(row[colnum], file=g)
+    return
+
+def read_sql(filename):
+    with open(filename,'r') as f:
+        sql_string = f.read()
+    return(sql_string)
+
+path = create_folder()
+
+cur1 = conn.cursor()
+cur2 = conn.cursor()
+cur3 = conn.cursor()
+cur4 = conn.cursor()
+cur5 = conn.cursor()
+cur6 = conn.cursor()
+
+path_to_sql1='Insert_new_override_with_calc_pending_set_current_date.sql'
+path_to_sql2='Update_existing_override_with_calc_pending_set.sql'
+path_to_sql3=path+'\\'+'sql1.sql'
+path_to_sql4=path+'\\'+'sql2.sql'
+path_to_sql5=path+'\\'+'sql3.sql'
+path_to_sql6=path+'\\'+'sql4.sql'
+
+sql_query1 = read_sql(path_to_sql1)
+sql_query2 = read_sql(path_to_sql2)
+
+
+try:
+    cur1.execute(sql_query1)
+    cur2.execute(sql_query2)
+except:
+    print("Can't connect.")
+
+rows1 = cur1.fetchall()
+rows2 = cur2.fetchall()
+
+print_sql_to_file(path_to_sql3, rows1, 6)
+print_sql_to_file(path_to_sql4, rows1, 7)
+print_sql_to_file(path_to_sql5, rows2, 2)
+print_sql_to_file(path_to_sql6, rows2, 3)
+
+print('Insert created '+str(cur1.rowcount)+' rows')
+print('Update created '+str(cur2.rowcount)+' rows')
+
+if not PARAM1:
+    sql_query3 = read_sql(path_to_sql3)
+    sql_query4 = read_sql(path_to_sql4)
+    sql_query5 = read_sql(path_to_sql5)
+    sql_query6 = read_sql(path_to_sql6)
+
+    try:
+        cur3.execute(sql_query3)
+        cur4.execute(sql_query4)
+        cur5.execute(sql_query5)
+        cur6.execute(sql_query6)
+    except:
+        print("Can't connect.")
+else:
+    print("PARAM1=TRUE, skipping execution of 4 created queries")
+
+conn.commit()
+
+cur1.close()
+cur2.close()
+cur3.close()
+cur4.close()
+cur5.close()
+cur6.close()
+conn.close()
+
+#print(rows_affected, ' rows affected')

@@ -1,0 +1,3 @@
+for el in range(20):
+    for el in range(20):
+        print('x', end='')

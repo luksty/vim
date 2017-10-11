@@ -1,0 +1,32 @@
+#include menu.ahk
+^#r::
+Reload
+Msgbox, Reloaded.
+Return
+
+
+#e::
+IfWinExist, ahk_class Vim
+    WinActivate ; use the window found above
+return
+
+; ; VIM HOT KEYS
+  #IfWinActive, ahk_class Vim
+    +`;::Send, `;
+    `;::Send, `:
+  #IfWinActive
+; preserve Ctrl-n/-p mappings in VIM
+  #IfWinNotActive, ahk_class Vim
+    ^n::send {down}
+    ^p::send {up}
+  #IfWinActive
+
+CapsLock::Esc
+!j::send jjjjj
+!k::send kkkkk
+#j::send {j 15}
+#k::send {k 15}
+F10::ExitApp
+;#z::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.
+MButton::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.
+#z::Menu, MyMenu, Show  ; i.e. press the Win-Z hotkey to show the menu.

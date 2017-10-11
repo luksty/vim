@@ -1,0 +1,43 @@
+; EXAMPLE #2: This is a working script that creates a popup menu that is displayed when the user presses the Win-Z hotkey.
+
+; Create the popup menu by adding some items to it.
+Menu, MyMenu, Add, Has³o podukcja, Prod_haslo
+Menu, MyMenu, Add, Manual Taks Execution DY22, Manual_task_execution
+Menu, MyMenu, Add, Email, wpisz_email
+;Menu, MyMenu, Add  ; Add a separator line.
+
+; Create another menu destined to become a submenu of the above menu.
+Menu, Submenu1, Add, Has³o staging admin, Staging_admin
+Menu, Submenu1, Add, Has³o staging superadmin, Staging_superadmin
+;Menu, Submenu1, Add, Item2, MenuHandler
+
+; Create a submenu in the first menu (a right-arrow indicator). When the user selects it, the second menu is displayed.
+Menu, MyMenu, Add, Wiêcej hase³, :Submenu1
+
+;Menu, MyMenu, Add  ; Add a separator line below the submenu.
+
+;Menu, MyMenu, Add, Item3, MenuHandler  ; Add another menu item beneath the submenu.
+return  ; End of script's auto-execute section.
+
+MenuHandler:
+MsgBox You selected %A_ThisMenuItem% from the menu %A_ThisMenu%.
+return
+
+Prod_haslo:
+#h::
+   Send, luksty{tab}thud-6cq5Bbc{return}
+Return
+
+Staging_admin:
+   Send, admin{tab}Hkzc4nL{#}]@y9EgL{return}
+Return
+Staging_superadmin:
+   Send, nT3AZ{!}Cze{return}
+Return
+Manual_task_execution:
+   ;Send, ASCD{Tab}20170917
+   Send, 20171008{tab}{tab}DAILY{tab}22DY
+Return
+wpisz_email:
+   Send, lukasz.styrylski@syncron.com
+Return

@@ -1,0 +1,16 @@
+call textobj#user#plugin('line', {
+\   '-': {
+\     'select-a-function': 'CurrentLineA',
+\     'select-a': 'ae',
+\     'select-i-function': 'CurrentLineA',
+\     'select-i': 'ie',
+\   },
+\ })
+
+function! CurrentLineA()
+  normal! 0
+  let head_pos = getpos('.')
+  normal! G$
+  let tail_pos = getpos('.')
+  return ['V', head_pos, tail_pos]
+endfunction

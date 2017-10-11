@@ -1,0 +1,4 @@
+from urllib.request import urlopen
+html = urlopen("http://www.wikipedia.com/")
+for el in html:
+    print(el)
