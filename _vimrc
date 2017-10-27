@@ -8,7 +8,8 @@ set undodir=C:/Users/luksty/OneDrive\ -\ Syncron/VIM/undo//
 "ustawia working directory na œcie¿kê pliku
 nnoremap <LEADER>cd :cd %:p:h<CR>:pwd<CR>
 
-call plug#begin('~/.vim/plugged')
+"call plug#begin('~/.vim/plugged')
+call plug#begin('C:/Users/luksty/OneDrive - Syncron/VIM/.vim/plugged')
 "Solarized Colorscheme for Vim
 Plug 'altercation/vim-colors-solarized'
 "Comment stuff out. Use gcc to comment out a line (takes a count), gc to comment out the target of a motion
@@ -29,7 +30,12 @@ Plug 'saaguero/vim-textobj-pastedtext'
 Plug 'thaerkh/vim-workspace'
 "A tree explorer
 Plug 'scrooloose/nerdtree'
+" Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
+Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
+
+" let g:ctrlp_map='<c-p>'
+" let g:ctrlp_cmd = 'CtrlPMixed'
 
  " -- solarized personal conf
 " set background=light
@@ -77,7 +83,7 @@ set shiftwidth=4
 " :onoremap <silent> al :norm val<cr>
 " :onoremap <silent> il :norm vil<cr>
 
-noremap <Leader>e :tabe C:\Users\luksty\OneDrive - Syncron\TEMP\
+noremap <Leader>e :tabe<SPACE>
 :nnoremap <Leader>sw :%s/\<<C-r><C-w>\>/
 map <leader>ps :set syntax=python<cr>
 map <leader>pp :%Py<CR>
@@ -89,7 +95,7 @@ map <leader>bd :RemoveCurrentFile<CR>
 map <leader>bo :OpenCurrentFileDirectory<CR>
 noremap Y y$
 noremap <C-I> <C-A>
-noremap <esc> :noh<return><esc>
+noremap <esc> :noh<return><esc><esc><esc><esc>
 noremap <leader>ss :%s//g<left><left>
 noremap <leader>sa :s//g<left><left>
 noremap <leader>ve :tabe $MYVIMRC<cr>
@@ -106,6 +112,7 @@ noremap <CR> i<cr><Esc>
 noremap tn :tabnew<CR>
 noremap td :q!<CR>
 noremap ts :tab split<CR>
+noremap <leader>n :%s///n<CR>
 
 :set guitablabel=%t
 set showtabline=2
