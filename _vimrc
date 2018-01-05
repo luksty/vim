@@ -6,7 +6,7 @@ set undodir=C:/Users/luksty/OneDrive\ -\ Syncron/VIM/undo//
 "prawdopodobnie z vim-workspace
 " set autochdir
 "ustawia working directory na œcie¿kê pliku
-nnoremap <LEADER>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <LEADER>cd :cd %:p:h<CR>
 
 "call plug#begin('~/.vim/plugged')
 call plug#begin('C:/Users/luksty/OneDrive - Syncron/VIM/.vim/plugged')
@@ -27,11 +27,11 @@ Plug 'kana/vim-textobj-line'
 "A convenient text object for last pasted text
 Plug 'saaguero/vim-textobj-pastedtext'
 "Persistent Vim Session
-Plug 'thaerkh/vim-workspace'
+" Plug 'thaerkh/vim-workspace'
 "A tree explorer
 Plug 'scrooloose/nerdtree'
 " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " let g:ctrlp_map='<c-p>'
@@ -71,7 +71,7 @@ set ic
 set foldmethod=marker
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
-behave mswin
+" behave mswin
 cd C:\Users\luksty\OneDrive - Syncron\TEMP
 set shiftwidth=4
 
@@ -87,7 +87,8 @@ noremap <Leader>e :tabe<SPACE>
 :nnoremap <Leader>sw :%s/\<<C-r><C-w>\>/
 map <leader>ps :set syntax=python<cr>
 map <leader>pp :%Py<CR>
-map <F6> :%Py<CR>
+" map <leader>bb yy:@"<CR>
+map <leader>bb yil:silent! exe 'r!bash -c "<c-r>""'<CR>
 imap <leader>pf for idx, line in enumerate(c):<CR><SPACE><SPACE><SPACE><SPACE><CR>xxx<CR><LEFT><LEFT><LEFT><LEFT><LEFT>
 map <leader>pf ifor idx, line in enumerate(c):<CR><SPACE><SPACE><SPACE><SPACE><CR>xxx<CR><LEFT><LEFT><LEFT><LEFT><LEFT>
 map <leader>te :Temp<CR>
@@ -120,6 +121,8 @@ set showtabline=2
 
 python3 << EOL
 import vim, io, sys
+from seq import seq
+from seq import seq as s
 def PyExecReplace(line1,line2):
   i=-1
   for index, line in enumerate(vim.current.buffer):
@@ -191,6 +194,22 @@ function! ConcatenateIntoList()
     s/^/(
     s/$/)
 endfunction
+function! Bash()
+    silent! exe 'r!bash -c "curl -Ls git.io/comments"'
+endfunction
+
+function! SurroundWithApostrophes()
+    %s/^\|$/'/g
+endfunction
+
+function! Bash()
+    silent! exe 'r!bash -c "curl -Ls git.io/comments"'
+endfunction
+
+function! IncrementAllNumbers()
+    %s/\d\+/\=(submatch(0)+line('.')-1)/g
+endfunction
+
 
 call textobj#user#plugin('entire', {
 \      '-': {
